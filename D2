@@ -1,0 +1,85 @@
+Index.php (login form)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Form</title>
+</head>
+<body>
+    <h2>Login Form</h2>
+    <form action="welcome.php" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+
+
+Welcome .php
+
+<?php
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    // Store credentials in session
+    $_SESSION['username'] = $username;
+    $_SESSION['password'] = $password;
+
+    // Redirect to welcome page
+    header('Location: welcome_page.php');
+    exit;
+} else {
+    // If the form is not submitted, redirect back to the login page
+    header('Location: index.php');
+    exit;
+}
+?>
+
+
+Welcome page.php
+<?php
+session_start();
+
+// Check if the user is logged in
+if (isset($_SESSION['username']) && isset($_SESSION['password'])) {
+    $username = $_SESSION['username'];
+    $password = $_SESSION['password'];
+} else {
+    // If the user is not logged in, redirect back to the login page
+    header('Location: index.php');
+    exit;
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome Page</title>
+</head>
+<body>
+    <h2>Welcome, <?php echo $username; ?>!</h2>
+    <p>Your password is: <?php echo $password; ?></p>
+    <a href="logout.php">Logout</a>
+</body>
+</html>
+
+
+Logout.php
+<?php
+session_start();
+
+// Clear all session data
+session_unset();
+
+// Destroy the session
+session_destroy();
+
+// Redirect to the login page
+header('Location: index.php');
+exit;
+?>
