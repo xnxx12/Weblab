@@ -1,0 +1,29 @@
+<?php
+function getUniqueCharacters($string1, $string2)
+{
+    $uniqueChars = '';
+    $string1 = str_split($string1);
+    $string2 = str_split($string2);
+    $charsCount1 = array_count_values($string1);
+    $charsCount2 = array_count_values($string2);
+
+    foreach ($charsCount1 as $char => $count) {
+        if (!isset($charsCount2[$char]) || $charsCount2[$char] !== $count) {
+            $uniqueChars .= $char;
+        }
+    }
+
+    foreach ($charsCount2 as $char => $count) {
+        if (!isset($charsCount1[$char]) || $charsCount1[$char] !== $count) {
+            $uniqueChars .= $char;
+        }
+    }
+
+    return $uniqueChars;
+}
+
+$string1 = "Hello";
+$string2 = "World";
+$uniqueChars = getUniqueCharacters($string1, $string2);
+echo "Unique characters: " . $uniqueChars;
+?>
